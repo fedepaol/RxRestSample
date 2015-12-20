@@ -15,15 +15,34 @@
  *
  */
 
-package com.whiterabbit.rxrestsample.rest;
+package com.whiterabbit.rxrestsample.inject;
 
-import java.util.List;
+import android.app.Application;
 
-import retrofit.http.GET;
-import retrofit.http.Path;
-import rx.Observable;
+import com.whiterabbit.rxrestsample.rest.GitHubClient;
 
-public interface GitHubService {
-    @GET("/users/{user}/repos")
-    Observable<List<Repo>> listRepos(@Path("user") String user);
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+
+@Module
+public class InjectModule {
+    private Application mApp;
+
+    public InjectModule(Application app) {
+        mApp = app;
+    }
+
+    @Provides
+    @Singleton
+    GitHubClient provideGitHubClient() {
+        return null;
+    }
+
+    @Provides
+    @Singleton
+    Application provideApplication() {
+        return mApp;
+    }
 }

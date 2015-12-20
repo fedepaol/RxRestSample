@@ -19,11 +19,20 @@ package com.whiterabbit.rxrestsample.rest;
 
 import java.util.List;
 
-import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit.Retrofit;
 import rx.Observable;
 
-public interface GitHubService {
-    @GET("/users/{user}/repos")
-    Observable<List<Repo>> listRepos(@Path("user") String user);
+public class GitHubClient {
+    private GitHubService mClient;
+
+    public GitHubClient() {
+        mClient = new Retrofit.Builder()
+                              .baseUrl("https://api.github.com")
+                              .build()
+                              .create(GitHubService.class);
+    }
+
+    public Observable<List<Repo>> getRepos(String username) {
+        return mClient.listRepos(username);
+    }
 }

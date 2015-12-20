@@ -15,15 +15,13 @@
  *
  */
 
-package com.whiterabbit.rxrestsample.rest;
+package com.whiterabbit.rxrestsample.inject;
 
-import java.util.List;
+import javax.inject.Singleton;
 
-import retrofit.http.GET;
-import retrofit.http.Path;
-import rx.Observable;
+import dagger.Component;
 
-public interface GitHubService {
-    @GET("/users/{user}/repos")
-    Observable<List<Repo>> listRepos(@Path("user") String user);
+@Singleton
+@Component(modules = {InjectModule.class})
+public interface InjectComponent {
 }
