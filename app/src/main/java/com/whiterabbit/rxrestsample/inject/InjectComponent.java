@@ -17,6 +17,8 @@
 
 package com.whiterabbit.rxrestsample.inject;
 
+import com.whiterabbit.rxrestsample.MainActivity;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -24,4 +26,5 @@ import dagger.Component;
 @Singleton
 @Component(modules = {InjectModule.class})
 public interface InjectComponent {
+    void inject(MainActivity activity);
 }
