@@ -19,30 +19,43 @@ package com.whiterabbit.rxrestsample.adapters;
 
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whiterabbit.rxrestsample.R;
+import com.whiterabbit.rxrestsample.rest.Repo;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder> {
+    private List<Repo> mRepos;
+
+    public RepoAdapter(List<Repo> repos) {
+        mRepos = repos;
+    }
 
     @Override
     public RepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View v = LayoutInflater.from(parent.getContext())
+                               .inflate(R.layout.list_element, parent, false);
+        return new RepoViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(RepoViewHolder holder, int position) {
-
+        Repo repo = mRepos.get(position);
+        holder.mRepoName.setText(repo.getFullName());
+        holder.mOwnerName.setText(repo.getOwner().getLogin());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mRepos.size();
     }
 
     public static class RepoViewHolder extends RecyclerView.ViewHolder {

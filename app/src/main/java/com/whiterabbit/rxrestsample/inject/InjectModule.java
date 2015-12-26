@@ -37,7 +37,7 @@ public class InjectModule {
     @Provides
     @Singleton
     GitHubClient provideGitHubClient() {
-        return null;
+        return new GitHubClient();
     }
 
     @Provides

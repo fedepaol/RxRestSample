@@ -19,7 +19,9 @@ package com.whiterabbit.rxrestsample.rest;
 
 import java.util.List;
 
+import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
 
 public class GitHubClient {
@@ -28,6 +30,8 @@ public class GitHubClient {
     public GitHubClient() {
         mClient = new Retrofit.Builder()
                               .baseUrl("https://api.github.com")
+                              .addConverterFactory(GsonConverterFactory.create())
+                              .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                               .build()
                               .create(GitHubService.class);
     }
