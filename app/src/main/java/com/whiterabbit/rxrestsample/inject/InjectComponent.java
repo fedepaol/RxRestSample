@@ -17,7 +17,7 @@
 
 package com.whiterabbit.rxrestsample.inject;
 
-import com.whiterabbit.rxrestsample.MainActivity;
+import com.whiterabbit.rxrestsample.NonCachedActivity;
 
 import javax.inject.Singleton;
 
@@ -26,5 +26,5 @@ import dagger.Component;
 @Singleton
 @Component(modules = {InjectModule.class})
 public interface InjectComponent {
-    void inject(MainActivity activity);
+    void inject(NonCachedActivity activity);
 }

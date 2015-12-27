@@ -23,7 +23,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class NonCachedActivity extends AppCompatActivity {
     @Inject GitHubClient mGithubClient;
     @Bind(R.id.pending_request_progress) ProgressBar mProgress;
     @Bind(R.id.main_list) RecyclerView mList;
