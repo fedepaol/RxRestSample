@@ -17,7 +17,6 @@
 
 package com.whiterabbit.rxrestsample.adapters;
 
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whiterabbit.rxrestsample.R;
-import com.whiterabbit.rxrestsample.rest.Repo;
+import com.whiterabbit.rxrestsample.data.Repo;
 
 import java.util.List;
 

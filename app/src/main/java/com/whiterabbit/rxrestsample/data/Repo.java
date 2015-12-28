@@ -15,7 +15,7 @@
  *
  */
 
-package com.whiterabbit.rxrestsample.rest;
+package com.whiterabbit.rxrestsample.data;
 
 import com.google.gson.annotations.SerializedName;
 

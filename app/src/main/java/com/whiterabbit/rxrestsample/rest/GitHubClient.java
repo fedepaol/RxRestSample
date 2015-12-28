@@ -17,6 +17,8 @@
 
 package com.whiterabbit.rxrestsample.rest;
 
+import com.whiterabbit.rxrestsample.data.Repo;
+
 import java.util.List;
 
 import retrofit.GsonConverterFactory;
