@@ -21,18 +21,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.whiterabbit.rxrestsample.adapters.RepoAdapter;
 import com.whiterabbit.rxrestsample.data.Repo;
 import com.whiterabbit.rxrestsample.data.RepoDbObservable;
-import com.whiterabbit.rxrestsample.rest.GitHubClient;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
