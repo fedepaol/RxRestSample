@@ -46,7 +46,7 @@ public class NonCachedActivity extends AppCompatActivity {
         mObservable = mGithubClient.getRepos("fedepaol");
 
         mObservable.delay(3, TimeUnit.SECONDS) // delayed for demonstration purpouse
-                   .subscribeOn(Schedulers.newThread())
+                   .subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread()).subscribe(l -> {
                     RepoAdapter a = new RepoAdapter(l);
                     mList.setAdapter(a);

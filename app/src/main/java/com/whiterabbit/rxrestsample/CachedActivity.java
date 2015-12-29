@@ -61,7 +61,7 @@ public class CachedActivity extends AppCompatActivity {
         mObservable = RepoDbObservable.getObservable(getApplicationContext());
 
         mObservable.delay(3, TimeUnit.SECONDS) // delayed for demonstration purpouse
-                   .subscribeOn(Schedulers.newThread())
+                   .subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread()).subscribe(l -> {
                     RepoAdapter a = new RepoAdapter(l);
                     mList.setAdapter(a);
