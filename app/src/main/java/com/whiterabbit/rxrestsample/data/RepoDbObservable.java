@@ -34,7 +34,7 @@ public class RepoDbObservable {
         mDbHelper = new RepoDbHelper(c);
     }
 
-    public Observable<List<Repo>> getObservable(Context ctx) {
+    public Observable<List<Repo>> getObservable() {
         return mSubject.startWith(getAllReposFromDb());
     }
 

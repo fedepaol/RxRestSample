@@ -44,7 +44,7 @@ public class CachedRepoDbObservable {
     }
 
     public Observable<List<Repo>> getDbObservable() {
-        return mDatabase.getObservable(mApplication.getApplicationContext());
+        return mDatabase.getObservable();
     }
 
     public Observable<String> getProgressObservable() {

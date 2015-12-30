@@ -71,6 +71,8 @@ public class CachedActivity extends AppCompatActivity {
                            .subscribe(s -> {},
                                       e -> { Log.d("RX", "There has been an error");},
                                       () -> {});
+
+        mRepo.updateRepo("fedepaol");
     }
 
     @Override
@@ -79,7 +81,7 @@ public class CachedActivity extends AppCompatActivity {
         if (mObservable != null) {
             mObservable.unsubscribeOn(Schedulers.computation());
         }
-        if (mProgressObservable == null) {
+        if (mProgressObservable != null) {
             mProgressObservable.unsubscribeOn(Schedulers.computation()); // TODO this could be done
                                                                          // without explicit thread
         }
