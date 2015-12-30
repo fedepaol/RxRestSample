@@ -27,21 +27,18 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 
 public class RepoDbObservable {
-    private static PublishSubject<List<Repo>> mSubject = PublishSubject.create();
-    private static RepoDbHelper mDbHelper;
+    private PublishSubject<List<Repo>> mSubject = PublishSubject.create();
+    private RepoDbHelper mDbHelper;
 
-    private RepoDbObservable(Context c) {
+    public RepoDbObservable(Context c) {
         mDbHelper = new RepoDbHelper(c);
     }
 
-    public static Observable<List<Repo>> getObservable(Context ctx) {
-        if (mDbHelper == null) {
-            mDbHelper = new RepoDbHelper(ctx);
-        }
+    public Observable<List<Repo>> getObservable(Context ctx) {
         return mSubject.startWith(getAllReposFromDb());
     }
 
-    private static List<Repo> getAllReposFromDb() {
+    private List<Repo> getAllReposFromDb() {
        List<Repo> repos = new ArrayList<>();
         Cursor c = mDbHelper.getAllRepo();
         c.moveToFirst();

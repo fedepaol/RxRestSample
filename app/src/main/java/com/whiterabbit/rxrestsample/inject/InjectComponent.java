@@ -18,6 +18,7 @@
 package com.whiterabbit.rxrestsample.inject;
 
 import com.whiterabbit.rxrestsample.CachedActivity;
+import com.whiterabbit.rxrestsample.CachedRepoDbObservable;
 import com.whiterabbit.rxrestsample.NonCachedActivity;
 
 import javax.inject.Singleton;
@@ -29,4 +30,5 @@ import dagger.Component;
 public interface InjectComponent {
     void inject(NonCachedActivity activity);
     void inject(CachedActivity activity);
+    void inject(CachedRepoDbObservable cached);
 }

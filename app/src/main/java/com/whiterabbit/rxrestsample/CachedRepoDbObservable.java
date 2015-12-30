@@ -37,14 +37,14 @@ public class CachedRepoDbObservable {
     @Inject RepoDbObservable mDatabase;
     @Inject Application mApplication;
 
-    BehaviorSubject<String> mRestSubject;
+    private BehaviorSubject<String> mRestSubject;
 
     public CachedRepoDbObservable() {
         mRestSubject = BehaviorSubject.create();
     }
 
     public Observable<List<Repo>> getDbObservable() {
-        return RepoDbObservable.getObservable(mApplication.getApplicationContext());
+        return mDatabase.getObservable(mApplication.getApplicationContext());
     }
 
     public Observable<String> getProgressObservable() {

@@ -20,6 +20,7 @@ package com.whiterabbit.rxrestsample.inject;
 import android.app.Application;
 
 import com.whiterabbit.rxrestsample.CachedRepoDbObservable;
+import com.whiterabbit.rxrestsample.data.RepoDbObservable;
 import com.whiterabbit.rxrestsample.rest.GitHubClient;
 
 import javax.inject.Singleton;
@@ -50,5 +51,11 @@ public class InjectModule {
     @Provides
     CachedRepoDbObservable provideCachedObservable() {
         return new CachedRepoDbObservable();
+    }
+
+    @Provides
+    @Singleton
+    RepoDbObservable provideRepoDbObservable() {
+        return new RepoDbObservable(mApp.getApplicationContext());
     }
 }
