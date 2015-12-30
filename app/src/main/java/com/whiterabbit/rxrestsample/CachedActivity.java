@@ -25,10 +25,8 @@ import android.util.Log;
 
 import com.whiterabbit.rxrestsample.adapters.RepoAdapter;
 import com.whiterabbit.rxrestsample.data.Repo;
-import com.whiterabbit.rxrestsample.data.RepoDbObservable;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 import javax.inject.Inject;
