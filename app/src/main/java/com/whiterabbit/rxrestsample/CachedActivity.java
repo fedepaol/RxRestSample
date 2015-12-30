@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.whiterabbit.rxrestsample.adapters.RepoAdapter;
 import com.whiterabbit.rxrestsample.data.Repo;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
@@ -37,8 +40,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class CachedActivity extends AppCompatActivity {
+    @Inject CachedRepoDbObservable mRepo;
+
     @Bind(R.id.main_list) RecyclerView mList;
     private Observable<List<Repo>> mObservable;
+    private Observable<String> mProgressObservable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +60,19 @@ public class CachedActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mObservable = RepoDbObservable.getObservable(getApplicationContext());
-
-        mObservable.delay(3, TimeUnit.SECONDS) // delayed for demonstration purpouse
-                   .subscribeOn(Schedulers.io())
+        mObservable = mRepo.getDbObservable();
+        mObservable.subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread()).subscribe(l -> {
                     RepoAdapter a = new RepoAdapter(l);
                     mList.setAdapter(a);
                 });
+
+        mProgressObservable = mRepo.getProgressObservable();
+        mProgressObservable.subscribeOn(Schedulers.io())
+                           .observeOn(AndroidSchedulers.mainThread())
+                           .subscribe(s -> {},
+                                      e -> { Log.d("RX", "There has been an error");},
+                                      () -> {});
     }
 
     @Override
@@ -69,6 +80,10 @@ public class CachedActivity extends AppCompatActivity {
         super.onPause();
         if (mObservable != null) {
             mObservable.unsubscribeOn(Schedulers.computation());
+        }
+        if (mProgressObservable == null) {
+            mProgressObservable.unsubscribeOn(Schedulers.computation()); // TODO this could be done
+                                                                         // without explicit thread
         }
     }
 }

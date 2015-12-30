@@ -68,6 +68,10 @@ public class RepoDbObservable {
         mSubject.onNext(repos);
     }
 
+    public void propagateError(Throwable e) {
+        mSubject.onError(e);
+    }
+
     public void insertRepo(Repo r) {
         mDbHelper.addRepo(r.getId(),
                 r.getName(),
