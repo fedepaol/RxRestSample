@@ -15,7 +15,7 @@
  *
  */
 
-package com.whiterabbit.rxrestsample;
+package com.whiterabbit.rxrestsample.data;
 
 import android.app.Application;
 

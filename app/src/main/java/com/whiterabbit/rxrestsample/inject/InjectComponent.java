@@ -18,7 +18,7 @@
 package com.whiterabbit.rxrestsample.inject;
 
 import com.whiterabbit.rxrestsample.CachedActivity;
-import com.whiterabbit.rxrestsample.CachedRepoDbObservable;
+import com.whiterabbit.rxrestsample.data.CachedRepoDbObservable;
 import com.whiterabbit.rxrestsample.NonCachedActivity;
 
 import javax.inject.Singleton;

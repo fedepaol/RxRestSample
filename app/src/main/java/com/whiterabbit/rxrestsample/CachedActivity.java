@@ -18,12 +18,15 @@
 package com.whiterabbit.rxrestsample;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ViewTreeObserver;
 
 import com.whiterabbit.rxrestsample.adapters.RepoAdapter;
+import com.whiterabbit.rxrestsample.data.CachedRepoDbObservable;
 import com.whiterabbit.rxrestsample.data.Repo;
 
 import java.util.List;
@@ -37,40 +40,50 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class CachedActivity extends AppCompatActivity {
-    @Inject CachedRepoDbObservable mRepo;
+public class CachedActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    @Inject
+    CachedRepoDbObservable mRepo;
 
-    @Bind(R.id.main_list) RecyclerView mList;
+    @Bind(R.id.cached_list) RecyclerView mList;
+    @Bind(R.id.activity_cached_swipe) SwipeRefreshLayout mSwipeLayout;
+
     private Observable<List<Repo>> mObservable;
     private Observable<String> mProgressObservable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_cached);
         ButterKnife.bind(this);
         ((RxSampleApplication) getApplication()).getComponent().inject(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mList.setLayoutManager(layoutManager);
+        mSwipeLayout.setOnRefreshListener(this);
+        mObservable = mRepo.getDbObservable();
+        mProgressObservable = mRepo.getProgressObservable();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mObservable = mRepo.getDbObservable();
         mObservable.subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread()).subscribe(l -> {
                     RepoAdapter a = new RepoAdapter(l);
                     mList.setAdapter(a);
                 });
 
-        mProgressObservable = mRepo.getProgressObservable();
+        fetchUpdates();
+    }
+
+    private void fetchUpdates() {
         mProgressObservable.subscribeOn(Schedulers.io())
                            .observeOn(AndroidSchedulers.mainThread())
                            .subscribe(s -> {},
-                                      e -> { Log.d("RX", "There has been an error");},
-                                      () -> {});
+                                      e -> { Log.d("RX", "There has been an error");
+                                            mSwipeLayout.setRefreshing(false);
+                                      },
+                                      () -> mSwipeLayout.setRefreshing(false));
 
         mRepo.updateRepo("fedepaol");
     }
@@ -85,5 +98,10 @@ public class CachedActivity extends AppCompatActivity {
             mProgressObservable.unsubscribeOn(Schedulers.computation()); // TODO this could be done
                                                                          // without explicit thread
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        fetchUpdates();
     }
 }

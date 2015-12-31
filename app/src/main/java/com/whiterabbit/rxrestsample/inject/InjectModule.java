@@ -19,7 +19,6 @@ package com.whiterabbit.rxrestsample.inject;
 
 import android.app.Application;
 
-import com.whiterabbit.rxrestsample.CachedRepoDbObservable;
 import com.whiterabbit.rxrestsample.data.RepoDbObservable;
 import com.whiterabbit.rxrestsample.rest.GitHubClient;
 

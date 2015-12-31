@@ -43,13 +43,13 @@ public class RepoDbObservable {
         List<Repo> repos = new ArrayList<>();
         Cursor c = mDbHelper.getAllRepo();
         c.moveToFirst();
-        while (c.moveToNext()) {
+        do {
             repos.add(new Repo(c.getString(RepoDbHelper.REPO_ID_COLUMN_POSITION),
                                c.getString(RepoDbHelper.REPO_NAME_COLUMN_POSITION),
                                c.getString(RepoDbHelper.REPO_FULLNAME_COLUMN_POSITION),
                                new Repo.Owner(c.getString(RepoDbHelper.REPO_OWNER_COLUMN_POSITION),
                                               "", "", "")));
-        }
+        } while (c.moveToNext());
         c.close();
         mDbHelper.close();
         return repos;
