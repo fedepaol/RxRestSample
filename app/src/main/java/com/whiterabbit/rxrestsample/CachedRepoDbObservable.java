@@ -18,7 +18,6 @@
 package com.whiterabbit.rxrestsample;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.whiterabbit.rxrestsample.data.Repo;
 import com.whiterabbit.rxrestsample.data.RepoDbObservable;
@@ -33,12 +32,16 @@ import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
 public class CachedRepoDbObservable {
-    @Inject GitHubClient mClient;
-    @Inject RepoDbObservable mDatabase;
-    @Inject Application mApplication;
+    @Inject
+    GitHubClient mClient;
+    @Inject
+    RepoDbObservable mDatabase;
+    @Inject
+    Application mApplication;
 
     private BehaviorSubject<String> mRestSubject;
 
+    @Inject
     public CachedRepoDbObservable() {
         mRestSubject = BehaviorSubject.create();
     }

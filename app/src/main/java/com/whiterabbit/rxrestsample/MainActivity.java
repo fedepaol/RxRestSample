@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.activity_list_cached_button)
     public void startCachedActivity(View view) {
-        Intent i = new Intent(this, NonCachedActivity.class);
+        Intent i = new Intent(this, CachedActivity.class);
         startActivity(i);
     }
 

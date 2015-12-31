@@ -49,12 +49,6 @@ public class InjectModule {
     }
 
     @Provides
-    CachedRepoDbObservable provideCachedObservable() {
-        return new CachedRepoDbObservable();
-    }
-
-    @Provides
-    @Singleton
     RepoDbObservable provideRepoDbObservable() {
         return new RepoDbObservable(mApp.getApplicationContext());
     }

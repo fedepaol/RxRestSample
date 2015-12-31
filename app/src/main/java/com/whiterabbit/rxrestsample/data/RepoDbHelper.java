@@ -53,6 +53,11 @@ public class RepoDbHelper {
         mDb = mDbHelper.getWritableDatabase();
         return this;
     }
+
+    public RepoDbHelper openForRead() throws SQLException {
+        mDb = mDbHelper.getReadableDatabase();
+        return this;
+    }
                                                      
     public void close() {
         mDb.close();

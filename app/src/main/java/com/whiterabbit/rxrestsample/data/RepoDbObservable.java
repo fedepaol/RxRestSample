@@ -39,7 +39,8 @@ public class RepoDbObservable {
     }
 
     private List<Repo> getAllReposFromDb() {
-       List<Repo> repos = new ArrayList<>();
+        mDbHelper.openForRead();
+        List<Repo> repos = new ArrayList<>();
         Cursor c = mDbHelper.getAllRepo();
         c.moveToFirst();
         while (c.moveToNext()) {
@@ -50,11 +51,13 @@ public class RepoDbObservable {
                                               "", "", "")));
         }
         c.close();
+        mDbHelper.close();
         return repos;
     }
 
     public void insertRepoList(List<Repo> repos) {
         // This could have been done inside a transaction + yieldIfContendedSafely
+        mDbHelper.open();
         mDbHelper.removeAllRepo();
         for (Repo r : repos) {
             mDbHelper.addRepo(r.getId(),
@@ -62,6 +65,7 @@ public class RepoDbObservable {
                               r.getFullName(),
                               r.getOwner().getLogin());
         }
+        mDbHelper.close();
         mSubject.onNext(repos);
     }
 
@@ -70,11 +74,13 @@ public class RepoDbObservable {
     }
 
     public void insertRepo(Repo r) {
+        mDbHelper.open();
         mDbHelper.addRepo(r.getId(),
                 r.getName(),
                 r.getFullName(),
                 r.getOwner().getLogin());
 
+        mDbHelper.close();
 
         List<Repo> result = getAllReposFromDb();
         mSubject.onNext(result);
