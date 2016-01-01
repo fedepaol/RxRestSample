@@ -42,7 +42,9 @@ public class RepoDbObservable {
         mDbHelper.openForRead();
         List<Repo> repos = new ArrayList<>();
         Cursor c = mDbHelper.getAllRepo();
-        c.moveToFirst();
+        if (!c.moveToFirst()) { // empty
+            return repos;
+        }
         do {
             repos.add(new Repo(c.getString(RepoDbHelper.REPO_ID_COLUMN_POSITION),
                                c.getString(RepoDbHelper.REPO_NAME_COLUMN_POSITION),
