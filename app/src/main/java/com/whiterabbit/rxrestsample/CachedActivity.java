@@ -49,6 +49,7 @@ public class CachedActivity extends AppCompatActivity implements SwipeRefreshLay
 
     private Observable<List<Repo>> mObservable;
     private Observable<String> mProgressObservable;
+    private RepoAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,8 @@ public class CachedActivity extends AppCompatActivity implements SwipeRefreshLay
         mSwipeLayout.setOnRefreshListener(this);
         mObservable = mRepo.getDbObservable();
         mProgressObservable = mRepo.getProgressObservable();
+        mAdapter = new RepoAdapter();
+        mList.setAdapter(mAdapter);
     }
 
     @Override
@@ -69,8 +72,7 @@ public class CachedActivity extends AppCompatActivity implements SwipeRefreshLay
         super.onResume();
         mObservable.subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread()).subscribe(l -> {
-                    RepoAdapter a = new RepoAdapter(l);
-                    mList.setAdapter(a);
+                    mAdapter.updateData(l);
                 });
 
         fetchUpdates();

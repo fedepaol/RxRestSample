@@ -28,6 +28,7 @@ public class NonCachedActivity extends AppCompatActivity {
     @Bind(R.id.pending_request_progress) ProgressBar mProgress;
     @Bind(R.id.main_list) RecyclerView mList;
     private Observable<List<Repo>> mObservable;
+    private RepoAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class NonCachedActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mList.setLayoutManager(layoutManager);
+        mAdapter = new RepoAdapter();
+        mList.setAdapter(mAdapter);
     }
 
     @Override
@@ -48,9 +51,8 @@ public class NonCachedActivity extends AppCompatActivity {
         mObservable.delay(3, TimeUnit.SECONDS) // delayed for demonstration purpouse
                    .subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread()).subscribe(l -> {
-                    RepoAdapter a = new RepoAdapter(l);
-                    mList.setAdapter(a);
                     mProgress.setVisibility(View.INVISIBLE);
+                    mAdapter.updateData(l);
                 },
                 e -> mProgress.setVisibility(View.INVISIBLE),
                 ()-> mProgress.setVisibility(View.INVISIBLE));

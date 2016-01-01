@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.whiterabbit.rxrestsample.R;
 import com.whiterabbit.rxrestsample.data.Repo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,8 +35,13 @@ import butterknife.ButterKnife;
 public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder> {
     private List<Repo> mRepos;
 
-    public RepoAdapter(List<Repo> repos) {
+    public RepoAdapter() {
+        mRepos = new ArrayList<>(0);
+    }
+
+    public void updateData(List<Repo> repos) {
         mRepos = repos;
+        notifyDataSetChanged();
     }
 
     @Override
