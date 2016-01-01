@@ -45,11 +45,4 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, CachedActivity.class);
         startActivity(i);
     }
-
-    @OnClick(R.id.activity_list_cached_sqlbrite_button)
-    public void startSqlBriteActivity(View view) {
-        Intent i = new Intent(this, NonCachedActivity.class);
-        startActivity(i);
-    }
-
 }

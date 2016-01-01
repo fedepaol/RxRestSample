@@ -24,6 +24,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import com.whiterabbit.rxrestsample.adapters.RepoAdapter;
 import com.whiterabbit.rxrestsample.data.CachedRepoDbObservable;
@@ -76,6 +77,8 @@ public class CachedActivity extends AppCompatActivity implements SwipeRefreshLay
                 });
 
         fetchUpdates();
+        Toast toast = Toast.makeText(this, "Updating..", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void fetchUpdates() {
