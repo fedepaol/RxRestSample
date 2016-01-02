@@ -30,9 +30,4 @@
         android:layout_height="wrap_content"
         android:text="Cached"
         android:id="@+id/activity_list_cached_button"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cached Sqlbrite"
-        android:id="@+id/activity_list_cached_sqlbrite_button"/>
 </LinearLayout>
