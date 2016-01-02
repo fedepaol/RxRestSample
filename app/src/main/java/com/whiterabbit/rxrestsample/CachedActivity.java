@@ -23,11 +23,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.whiterabbit.rxrestsample.adapters.RepoAdapter;
-import com.whiterabbit.rxrestsample.data.CachedRepoDbObservable;
+import com.whiterabbit.rxrestsample.data.ObservableGithubRepos;
 import com.whiterabbit.rxrestsample.data.Repo;
 
 import java.util.List;
@@ -43,7 +42,7 @@ import rx.schedulers.Schedulers;
 
 public class CachedActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     @Inject
-    CachedRepoDbObservable mRepo;
+    ObservableGithubRepos mRepo;
 
     @Bind(R.id.cached_list) RecyclerView mList;
     @Bind(R.id.activity_cached_swipe) SwipeRefreshLayout mSwipeLayout;

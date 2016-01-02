@@ -19,8 +19,6 @@ package com.whiterabbit.rxrestsample.data;
 
 import android.app.Application;
 
-import com.whiterabbit.rxrestsample.data.Repo;
-import com.whiterabbit.rxrestsample.data.RepoDbObservable;
 import com.whiterabbit.rxrestsample.rest.GitHubClient;
 
 import java.util.List;
@@ -31,19 +29,19 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
-public class CachedRepoDbObservable {
+public class ObservableGithubRepos {
     @Inject
     GitHubClient mClient;
     @Inject
-    RepoDbObservable mDatabase;
+    ObservableRepoDb mDatabase;
     @Inject
     Application mApplication;
 
-    private BehaviorSubject<String> mRestSubject;
+    private BehaviorSubject<String> mRequestSubject;
 
     @Inject
-    public CachedRepoDbObservable() {
-        mRestSubject = BehaviorSubject.create();
+    public ObservableGithubRepos() {
+        mRequestSubject = BehaviorSubject.create();
     }
 
     public Observable<List<Repo>> getDbObservable() {
@@ -51,7 +49,7 @@ public class CachedRepoDbObservable {
     }
 
     public Observable<String> getProgressObservable() {
-        return mRestSubject;
+        return mRequestSubject;
     }
 
     public void updateRepo(String userName) {
@@ -60,8 +58,8 @@ public class CachedRepoDbObservable {
                   .observeOn(Schedulers.io())
                   .subscribe(l -> {
                                     mDatabase.insertRepoList(l);
-                                    mRestSubject.onNext(userName);},
-                             e -> mRestSubject.onError(e),
-                             () -> mRestSubject.onCompleted());
+                                    mRequestSubject.onNext(userName);},
+                             e -> mRequestSubject.onError(e),
+                             () -> mRequestSubject.onCompleted());
     }
 }

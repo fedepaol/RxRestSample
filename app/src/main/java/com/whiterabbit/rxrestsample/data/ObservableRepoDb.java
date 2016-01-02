@@ -26,11 +26,11 @@ import java.util.List;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-public class RepoDbObservable {
+public class ObservableRepoDb {
     private PublishSubject<List<Repo>> mSubject = PublishSubject.create();
     private RepoDbHelper mDbHelper;
 
-    public RepoDbObservable(Context c) {
+    public ObservableRepoDb(Context c) {
         mDbHelper = new RepoDbHelper(c);
     }
 
@@ -69,10 +69,6 @@ public class RepoDbObservable {
         }
         mDbHelper.close();
         mSubject.onNext(repos);
-    }
-
-    public void propagateError(Throwable e) {
-        mSubject.onError(e);
     }
 
     public void insertRepo(Repo r) {
