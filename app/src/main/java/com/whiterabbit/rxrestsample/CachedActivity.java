@@ -37,6 +37,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -48,8 +49,9 @@ public class CachedActivity extends AppCompatActivity implements SwipeRefreshLay
     @Bind(R.id.activity_cached_swipe) SwipeRefreshLayout mSwipeLayout;
 
     private Observable<List<Repo>> mObservable;
-    private Observable<String> mProgressObservable;
     private RepoAdapter mAdapter;
+    private Subscription mDiskSubscription;
+    private Subscription mProgressSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +64,27 @@ public class CachedActivity extends AppCompatActivity implements SwipeRefreshLay
         mList.setLayoutManager(layoutManager);
         mSwipeLayout.setOnRefreshListener(this);
         mObservable = mRepo.getDbObservable();
-        mProgressObservable = mRepo.getProgressObservable();
+        mObservable.unsubscribeOn(Schedulers.computation()); // because of this https://github.com/square/retrofit/issues/1046
+
         mAdapter = new RepoAdapter();
         mList.setAdapter(mAdapter);
+    }
+
+    private void fetchUpdates() {
+        Observable<String> progressObservable = mRepo.updateRepo("fedepaol");
+        mProgressSubscription = progressObservable.subscribeOn(Schedulers.io())
+                           .observeOn(AndroidSchedulers.mainThread())
+                           .subscribe(s -> {},
+                                      e -> { Log.d("RX", "There has been an error");
+                                            mSwipeLayout.setRefreshing(false);
+                                      },
+                                      () -> mSwipeLayout.setRefreshing(false));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mObservable.subscribeOn(Schedulers.io())
+        mDiskSubscription = mObservable.subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread()).subscribe(l -> {
                     mAdapter.updateData(l);
                 });
@@ -80,27 +94,15 @@ public class CachedActivity extends AppCompatActivity implements SwipeRefreshLay
         toast.show();
     }
 
-    private void fetchUpdates() {
-        mProgressObservable.subscribeOn(Schedulers.io())
-                           .observeOn(AndroidSchedulers.mainThread())
-                           .subscribe(s -> {},
-                                      e -> { Log.d("RX", "There has been an error");
-                                            mSwipeLayout.setRefreshing(false);
-                                      },
-                                      () -> mSwipeLayout.setRefreshing(false));
-
-        mRepo.updateRepo("fedepaol");
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mObservable != null) {
-            mObservable.unsubscribeOn(Schedulers.computation());
+        if (mDiskSubscription != null) {
+            mDiskSubscription.unsubscribe();
         }
-        if (mProgressObservable != null) {
-            mProgressObservable.unsubscribeOn(Schedulers.computation()); // TODO this could be done
-                                                                         // without explicit thread
+        if (mProgressSubscription != null) {
+            mProgressSubscription.unsubscribe();
         }
     }
 

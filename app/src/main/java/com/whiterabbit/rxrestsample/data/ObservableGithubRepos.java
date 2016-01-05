@@ -37,29 +37,25 @@ public class ObservableGithubRepos {
     @Inject
     Application mApplication;
 
-    private BehaviorSubject<String> mRequestSubject;
-
     @Inject
     public ObservableGithubRepos() {
-        mRequestSubject = BehaviorSubject.create();
     }
 
     public Observable<List<Repo>> getDbObservable() {
         return mDatabase.getObservable();
     }
 
-    public Observable<String> getProgressObservable() {
-        return mRequestSubject;
-    }
+    public Observable<String> updateRepo(String userName) {
+        BehaviorSubject<String> requestSubject = BehaviorSubject.create();
 
-    public void updateRepo(String userName) {
         Observable<List<Repo>> observable = mClient.getRepos(userName);
         observable.subscribeOn(Schedulers.io())
                   .observeOn(Schedulers.io())
                   .subscribe(l -> {
                                     mDatabase.insertRepoList(l);
-                                    mRequestSubject.onNext(userName);},
-                             e -> mRequestSubject.onError(e),
-                             () -> mRequestSubject.onCompleted());
+                                    requestSubject.onNext(userName);},
+                             e -> requestSubject.onError(e),
+                             () -> requestSubject.onCompleted());
+        return requestSubject;
     }
 }

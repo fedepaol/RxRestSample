@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.subjects.PublishSubject;
 
 public class ObservableRepoDb {
@@ -35,7 +36,11 @@ public class ObservableRepoDb {
     }
 
     public Observable<List<Repo>> getObservable() {
-        return mSubject.startWith(getAllReposFromDb());
+        Observable<List<Repo>> firstTimeObservable =
+                Observable.create((Observable.OnSubscribe<List<Repo>>)
+                        subscriber -> subscriber.onNext(getAllReposFromDb()));
+
+        return firstTimeObservable.concatWith(mSubject);
     }
 
     private List<Repo> getAllReposFromDb() {
