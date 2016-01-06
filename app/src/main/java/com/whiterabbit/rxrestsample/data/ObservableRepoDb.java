@@ -37,9 +37,7 @@ public class ObservableRepoDb {
 
     public Observable<List<Repo>> getObservable() {
         Observable<List<Repo>> firstTimeObservable =
-                Observable.create((Observable.OnSubscribe<List<Repo>>)
-                        subscriber -> subscriber.onNext(getAllReposFromDb()));
-
+                Observable.fromCallable(this::getAllReposFromDb);
         return firstTimeObservable.concatWith(mSubject);
     }
 
