@@ -87,6 +87,9 @@ public class CachedActivity extends AppCompatActivity implements SwipeRefreshLay
         mDiskSubscription = mObservable.subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread()).subscribe(l -> {
                     mAdapter.updateData(l);
+
+                    Toast toast = Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT);
+                    toast.show();
                 });
 
         fetchUpdates();
