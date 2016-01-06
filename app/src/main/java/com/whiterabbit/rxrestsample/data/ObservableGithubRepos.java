@@ -56,6 +56,6 @@ public class ObservableGithubRepos {
                                     requestSubject.onNext(userName);},
                              e -> requestSubject.onError(e),
                              () -> requestSubject.onCompleted());
-        return requestSubject;
+        return requestSubject.asObservable();
     }
 }
